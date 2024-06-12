@@ -38,8 +38,9 @@ public class ClienteResource {
     @PUT
     @Path("/{id}")
     public Response update( @PathParam("id") Long id, ClienteDTO dto){
-        service.update(id, dto);
-        return Response.status(Status.NO_CONTENT).build();
+        // service.update(id, dto);
+        // IMPLEMENTAR
+        return Response.status(Status.NOT_IMPLEMENTED).build();
     }
 
     @GET
