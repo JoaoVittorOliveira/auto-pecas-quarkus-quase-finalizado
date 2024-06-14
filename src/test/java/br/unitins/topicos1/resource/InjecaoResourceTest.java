@@ -56,16 +56,16 @@ public class InjecaoResourceTest {
     public void findByCodigoTest() {
         given()
                 .when()
-                .get("/injecoes/search/codigo/#111")
+                .get("/injecoes/search/codigo/111")
                 .then()
                 .statusCode(200)
-                .body("codigo", hasItem(is("#111")));
+                .body("codigo", hasItem(is("111")));
     }
 
     @Test
     public void createTest() {
 
-        String nome = LocalDateTime.now() + "_TESTEUNIT";
+        String nome = LocalDateTime.now() + "_INJECAO_TESTEUNIT";
 
         InjecaoDTO dto = new InjecaoDTO(nome, "123123", 50, 200.0, "Gasolina");
 

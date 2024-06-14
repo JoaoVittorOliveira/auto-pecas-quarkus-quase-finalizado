@@ -40,6 +40,7 @@ public class ClienteResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed("Administrador")
     public Response delete( @PathParam("id") Long id){
         LOG.info("Executando delete");
         LOG.infof("ID informado: "+id);
