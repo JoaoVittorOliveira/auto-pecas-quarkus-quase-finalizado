@@ -10,7 +10,9 @@ public record VolanteDTO (
         @NotBlank(message = "O codigo nao pode ser null ou vazio")
         @Size(min = 16, max = 16, message = "O codigo do produto deve possuir 16 caracteres")
         String codigo,
+        @NotBlank(message = "O codigo nao pode ser null ou vazio")
         Integer estoque,
+        @NotBlank(message = "O preco do volante nao pode ser null ou vazio")
         Double preco,
         @NotBlank(message = "O diametro nao pode ser null ou vazio")
         String diametro,

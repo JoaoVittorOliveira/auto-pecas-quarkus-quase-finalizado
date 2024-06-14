@@ -10,11 +10,10 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class InjecaoServiceImp implements InjecaoService{
+public class InjecaoServiceImpl implements InjecaoService{
     @Inject
     InjecaoRepository injecaoRepository;
 

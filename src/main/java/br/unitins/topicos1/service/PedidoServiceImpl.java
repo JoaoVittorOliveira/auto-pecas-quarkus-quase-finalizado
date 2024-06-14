@@ -7,9 +7,12 @@ import br.unitins.topicos1.dto.ItemPedidoDTO;
 import br.unitins.topicos1.dto.PedidoDTO;
 import br.unitins.topicos1.dto.PedidoResponseDTO;
 import br.unitins.topicos1.model.ItemPedido;
+import br.unitins.topicos1.model.Pagamento;
 import br.unitins.topicos1.model.Pedido;
 import br.unitins.topicos1.model.Produto;
+import br.unitins.topicos1.model.StatusPagamentoPedido;
 import br.unitins.topicos1.repository.ClienteRepository;
+import br.unitins.topicos1.repository.PagamentoRepository;
 import br.unitins.topicos1.repository.PedidoRepository;
 import br.unitins.topicos1.repository.ProdutoRepository;
 import br.unitins.topicos1.validation.ValidationException;
@@ -32,6 +35,9 @@ public class PedidoServiceImpl implements PedidoService{
 
     @Inject
     public ClienteRepository clienteRepository;
+
+    @Inject
+    public PagamentoRepository pagamentoRepository;
 
     @Override
     @Transactional
@@ -77,6 +83,7 @@ public class PedidoServiceImpl implements PedidoService{
         }
 
         // FAZER PAGAMENTO (VALIDAÇÃO DE SALDO ETC)
+        pedido.setStatusPagamentoPedido(StatusPagamentoPedido.NAO_PAGO);
 
         pedido.setItens(itens);
         repository.persist(pedido);

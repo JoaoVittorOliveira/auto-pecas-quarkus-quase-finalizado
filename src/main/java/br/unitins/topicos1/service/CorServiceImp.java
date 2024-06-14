@@ -10,7 +10,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped

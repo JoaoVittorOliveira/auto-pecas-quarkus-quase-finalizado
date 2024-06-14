@@ -3,8 +3,6 @@ package br.unitins.topicos1.resource;
 import java.util.List;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
-
-import br.unitins.topicos1.dto.ProdutoDTO;
 import br.unitins.topicos1.dto.ProdutoResponseDTO;
 import br.unitins.topicos1.form.ImageForm;
 import br.unitins.topicos1.service.ProdutoFileServiceImpl;

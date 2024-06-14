@@ -8,8 +8,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasItem;

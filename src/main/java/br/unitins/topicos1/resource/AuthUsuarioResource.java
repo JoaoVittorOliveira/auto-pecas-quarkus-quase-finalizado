@@ -2,6 +2,7 @@ package br.unitins.topicos1.resource;
 
 import br.unitins.topicos1.dto.AuthUsuarioDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
+import br.unitins.topicos1.service.AdministradorService;
 import br.unitins.topicos1.service.ClienteService;
 import br.unitins.topicos1.service.HashService;
 import br.unitins.topicos1.service.JwtService;
@@ -23,6 +24,9 @@ public class AuthUsuarioResource {
     public ClienteService clienteService;
 
     @Inject
+    public AdministradorService administradorService;
+
+    @Inject
     public HashService hashService;
 
     @Inject
@@ -39,7 +43,7 @@ public class AuthUsuarioResource {
             usuario = clienteService.login(dto.username(), hashSenha);
         } else if (dto.perfil() == 2){
             // administrador
-            
+            usuario = administradorService.login(dto.username(), hashSenha);
         } else {
             // perfil inexistente
             return Response.status(Status.NOT_FOUND).header("Perfil", "perfis existentes: 1-cliente").build();

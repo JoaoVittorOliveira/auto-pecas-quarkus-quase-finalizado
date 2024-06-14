@@ -8,6 +8,7 @@ public record PedidoResponseDTO(
     Long id,
     ClienteResponseDTO cliente,
     Double total,
+    String StatusPagamentoPedido,
     List<ItemPedidoResponseDTO> itens
 ) 
     {
@@ -21,6 +22,7 @@ public record PedidoResponseDTO(
                 pedido.getId(), 
                 ClienteResponseDTO.valueOf(pedido.getCliente()),
                 pedido.getValorTotal(),
+                pedido.getStatusPagamentoPedido().getDescricao(),
                 lista);
         }
     }

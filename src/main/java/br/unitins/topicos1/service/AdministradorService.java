@@ -2,25 +2,25 @@ package br.unitins.topicos1.service;
 
 import java.util.List;
 
-import br.unitins.topicos1.dto.ClienteDTO;
-import br.unitins.topicos1.dto.ClienteResponseDTO;
+import br.unitins.topicos1.dto.AdministradorDTO;
+import br.unitins.topicos1.dto.AdministradorResponseDTO;
 import br.unitins.topicos1.dto.PasswordUpdateDTO;
 import br.unitins.topicos1.dto.UsernameUpdateDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
 import jakarta.validation.Valid;
 import jakarta.xml.bind.ValidationException;
 
-public interface ClienteService {
+public interface AdministradorService {
     
-    public ClienteResponseDTO create(@Valid ClienteDTO dto);
-    public void update(Long id, ClienteDTO dto) throws ValidationException;
+    public AdministradorResponseDTO create(@Valid AdministradorDTO dto);
+    public void update(Long id, AdministradorDTO dto) throws ValidationException;
     public void updateUsuarioPassword(Long id, PasswordUpdateDTO passwordUpdateDTO) throws ValidationException;
     public void updateUsuarioUsername(Long id, UsernameUpdateDTO usernameUpdateDTO);
     public boolean delete(Long id);
-    public List<ClienteResponseDTO> findAll();
-    public ClienteResponseDTO findById(Long id);
-    public List<ClienteResponseDTO> findByNome(String nome);
-    public ClienteResponseDTO findByUsername(String username);
-    public ClienteResponseDTO findByCpf(String cpf);
+    public List<AdministradorResponseDTO> findAll();
+    public AdministradorResponseDTO findById(Long id);
+    public List<AdministradorResponseDTO> findByNome(String nome);
+    public AdministradorResponseDTO findByUsername(String username);
+    public AdministradorResponseDTO findByCpf(String cpf);
     public UsuarioResponseDTO login(String username, String hashSenha);
 }

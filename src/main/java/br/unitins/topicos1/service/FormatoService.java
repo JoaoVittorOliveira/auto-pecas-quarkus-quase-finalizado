@@ -1,7 +1,5 @@
 package br.unitins.topicos1.service;
 
-import br.unitins.topicos1.dto.CorDTO;
-import br.unitins.topicos1.dto.CorResponseDTO;
 import br.unitins.topicos1.dto.FormatoDTO;
 import br.unitins.topicos1.dto.FormatoResponseDTO;
 

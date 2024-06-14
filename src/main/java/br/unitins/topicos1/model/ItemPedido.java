@@ -1,5 +1,6 @@
 package br.unitins.topicos1.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -8,7 +9,11 @@ import jakarta.persistence.ManyToOne;
 public class ItemPedido extends DefaultEntity{
 
     private Double valor;
+
+    @Column(name = "porcentagem_desconto")
     private Double porcentagemDesconto;
+
+    @Column(name = "quantidade_produtos")
     private Integer quantidadeProdutos;
 
     @ManyToOne

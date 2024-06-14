@@ -24,7 +24,7 @@ public class JwtServiceImpl implements JwtService{
         if(authDTO.perfil() == 1){
             roles.add("Cliente");
         } else {
-            // add outro perfil
+            roles.add("Administrador");
         }
 
         return Jwt.issuer("fueltech-jwt")

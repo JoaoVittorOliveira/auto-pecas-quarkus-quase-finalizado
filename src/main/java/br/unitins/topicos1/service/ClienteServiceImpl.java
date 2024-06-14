@@ -1,10 +1,13 @@
 package br.unitins.topicos1.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import br.unitins.topicos1.dto.ClienteDTO;
 import br.unitins.topicos1.dto.ClienteResponseDTO;
+import br.unitins.topicos1.dto.PasswordUpdateDTO;
+import br.unitins.topicos1.dto.UsernameUpdateDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
 import br.unitins.topicos1.model.Cliente;
 import br.unitins.topicos1.model.Pessoa;
@@ -12,6 +15,7 @@ import br.unitins.topicos1.model.Usuario;
 import br.unitins.topicos1.repository.ClienteRepository;
 import br.unitins.topicos1.repository.PessoaRepository;
 import br.unitins.topicos1.repository.UsuarioRepository;
+import br.unitins.topicos1.validation.ValidationError;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -37,6 +41,7 @@ public class ClienteServiceImpl implements ClienteService{
     HashService hashService;
 
     @Override
+    @Transactional
     public ClienteResponseDTO create(@Valid ClienteDTO dto) {
 
         Usuario usuario = new Usuario();
@@ -64,9 +69,37 @@ public class ClienteServiceImpl implements ClienteService{
     }
 
     @Override
+    @Transactional
     public void update(Long id, ClienteDTO dto) throws ValidationException {
        
+        Usuario usuario = repository.findById(id).getPessoa().getUsuario();
+        if(usuario != null){
+            usuario.setUsername(dto.username());
+            // fazer hash da nova senha
+            usuario.setSenha(hashService.getHashSenha(dto.senha()));
+        } else {
+            throw new ValidationException("Cliente inexistente");
+        }
+
+        Pessoa pessoa = repository.findById(id).getPessoa();
+        if(pessoa != null){
+            pessoa.setNome(dto.nome());
+            pessoa.setSobreNome(dto.sobreNome());
+            pessoa.setDataNascimento(LocalDate.of(dto.anoNasc(),dto.mesNasc(),dto.diaNasc()));
+            pessoa.setCpf(dto.cpf());
+            pessoa.setUsuario(usuario);
+        } else {
+            throw new ValidationException("Cliente inexistente");
+        }
         
+        Cliente cliente = repository.findById(id);
+
+        if(cliente != null){
+            cliente.setSaldo(0d);
+            cliente.setPessoa(pessoa);
+        } else {
+            throw new ValidationException("Cliente inexistente");
+        }
     }
 
     @Override
@@ -124,6 +157,39 @@ public class ClienteServiceImpl implements ClienteService{
         if(cliente != null)
             return UsuarioResponseDTO.valueof(cliente.getPessoa());
         return null;
+    }
+
+    @Override
+    @Transactional
+    public void updateUsuarioPassword(Long id, PasswordUpdateDTO passwordUpdateDTO) throws ValidationException {
+
+        Usuario usuario = usuarioRepository.findById(id);
+        Cliente cliente = repository.findByIdUsuario(usuario.getId());
+        if (usuario == null || cliente == null) {
+            throw new InternalError();
+        }
+
+        if(usuario.getSenha().equals(hashService.getHashSenha(passwordUpdateDTO.oldPassword()))){
+            usuario.setDataAlteracao(LocalDateTime.now());
+            usuario.setSenha(hashService.getHashSenha(passwordUpdateDTO.newPassword()));
+            usuarioService.update(usuario);
+            usuarioRepository.persist(usuario);
+        } else {
+            throw new ValidationException("Senha errada", "SENHA ANTIGA ERRADA");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateUsuarioUsername(Long id, UsernameUpdateDTO usernameUpdateDTO) {
+        Usuario usuario = usuarioRepository.findById(id);
+        Cliente cliente = repository.findByIdUsuario(usuario.getId());
+        if (usuario == null || cliente == null) {
+            throw new InternalError();
+        }
+        cliente.getPessoa().getUsuario().setUsername(usernameUpdateDTO.newUsername());
+        usuarioService.update(cliente.getPessoa().getUsuario());
+        repository.persist(cliente);
     }
 
 }
