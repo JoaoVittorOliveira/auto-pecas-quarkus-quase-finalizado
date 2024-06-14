@@ -10,18 +10,17 @@ import br.unitins.topicos1.dto.PasswordUpdateDTO;
 import br.unitins.topicos1.dto.UsernameUpdateDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
 import br.unitins.topicos1.model.Administrador;
-import br.unitins.topicos1.model.Cliente;
 import br.unitins.topicos1.model.Pessoa;
 import br.unitins.topicos1.model.Usuario;
 import br.unitins.topicos1.repository.AdministradorRepository;
 import br.unitins.topicos1.repository.PessoaRepository;
 import br.unitins.topicos1.repository.UsuarioRepository;
+import br.unitins.topicos1.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.NotFoundException;
-import jakarta.xml.bind.ValidationException;
 
 @ApplicationScoped
 public class AdministradorServiceImpl implements AdministradorService{
@@ -68,7 +67,7 @@ public class AdministradorServiceImpl implements AdministradorService{
 
     @Override
     @Transactional
-    public void update(Long id, AdministradorDTO dto) throws ValidationException {
+    public void update(Long id, AdministradorDTO dto) {
        
         Usuario usuario = repository.findById(id).getPessoa().getUsuario();
         if(usuario != null){
@@ -76,7 +75,7 @@ public class AdministradorServiceImpl implements AdministradorService{
             // fazer hash da nova senha
             usuario.setSenha(hashService.getHashSenha(dto.senha()));
         } else {
-            throw new ValidationException("Cliente inexistente");
+            throw new ValidationException("ID mal informado","ADM inexistente");
         }
 
         Pessoa pessoa = repository.findById(id).getPessoa();
@@ -87,20 +86,20 @@ public class AdministradorServiceImpl implements AdministradorService{
             pessoa.setCpf(dto.cpf());
             pessoa.setUsuario(usuario);
         } else {
-            throw new ValidationException("Cliente inexistente");
+            throw new ValidationException("ID mal informado","ADM inexistente");
         }
         
         Administrador adm = repository.findById(id);
         if(adm != null){
             adm.setPessoa(pessoa);
         } else {
-            throw new ValidationException("Cliente inexistente");
+            throw new ValidationException("ID mal informado","ADM inexistente");
         }
     }
 
     @Override
     @Transactional
-    public void updateUsuarioPassword(Long id, PasswordUpdateDTO passwordUpdateDTO) throws ValidationException {
+    public void updateUsuarioPassword(Long id, PasswordUpdateDTO passwordUpdateDTO) {
 
         Usuario usuario = usuarioRepository.findById(id);
         Administrador adm = repository.findByUsuarioId(usuario.getId());

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.everyItem;
 
 @QuarkusTest
 public class FormatoResourceTest {
@@ -41,8 +42,8 @@ public class FormatoResourceTest {
                 .when()
                 .get("/formatos/search/Formato")
                 .then()
-                .statusCode(200);
-//                .body("descricao", everyItem(is("Formato")));
+                .statusCode(200)
+                .body("descricao", everyItem(is("Formato")));
     }
 
     @Test

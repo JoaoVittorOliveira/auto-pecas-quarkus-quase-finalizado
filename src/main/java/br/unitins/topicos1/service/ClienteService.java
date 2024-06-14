@@ -8,13 +8,12 @@ import br.unitins.topicos1.dto.PasswordUpdateDTO;
 import br.unitins.topicos1.dto.UsernameUpdateDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
 import jakarta.validation.Valid;
-import jakarta.xml.bind.ValidationException;
 
 public interface ClienteService {
     
     public ClienteResponseDTO create(@Valid ClienteDTO dto);
-    public void update(Long id, ClienteDTO dto) throws ValidationException;
-    public void updateUsuarioPassword(Long id, PasswordUpdateDTO passwordUpdateDTO) throws ValidationException;
+    public void update(Long id, ClienteDTO dto);
+    public void updateUsuarioPassword(Long id, PasswordUpdateDTO passwordUpdateDTO);
     public void updateUsuarioUsername(Long id, UsernameUpdateDTO usernameUpdateDTO);
     public boolean delete(Long id);
     public List<ClienteResponseDTO> findAll();

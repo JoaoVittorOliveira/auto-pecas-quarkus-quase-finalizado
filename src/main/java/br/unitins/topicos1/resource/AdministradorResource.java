@@ -18,11 +18,10 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import jakarta.xml.bind.ValidationException;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/Administradores")
+@Path("/administradores")
 public class AdministradorResource {
      @Inject
     public AdministradorService service;
@@ -43,20 +42,15 @@ public class AdministradorResource {
     @PUT
     @Path("/{id}")
     public Response update( @PathParam("id") Long id, AdministradorDTO dto){
-        // service.update(id, dto);
-        // IMPLEMENTAR
-        return Response.status(Status.NOT_IMPLEMENTED).build();
+        service.update(id, dto);
+        return Response.status(Status.NO_CONTENT).build();
     }
 
     @PATCH
     @RolesAllowed("Administrador")
     @Path("/update-password/{idUsuario}")
     public Response updateUsuarioPassword( @PathParam("idUsuario") Long idUsuario, PasswordUpdateDTO passwordUpdateDTO){
-        try {
-            service.updateUsuarioPassword(idUsuario, passwordUpdateDTO);
-        } catch (ValidationException e) {
-            return Response.status(401).build();
-        }
+        service.updateUsuarioPassword(idUsuario, passwordUpdateDTO);
         return Response.status(Status.NO_CONTENT).build();
     }
 

@@ -15,12 +15,11 @@ import br.unitins.topicos1.model.Usuario;
 import br.unitins.topicos1.repository.ClienteRepository;
 import br.unitins.topicos1.repository.PessoaRepository;
 import br.unitins.topicos1.repository.UsuarioRepository;
-import br.unitins.topicos1.validation.ValidationError;
+import br.unitins.topicos1.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.xml.bind.ValidationException;
 
 @ApplicationScoped
 public class ClienteServiceImpl implements ClienteService{
@@ -70,7 +69,7 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Override
     @Transactional
-    public void update(Long id, ClienteDTO dto) throws ValidationException {
+    public void update(Long id, ClienteDTO dto) {
        
         Usuario usuario = repository.findById(id).getPessoa().getUsuario();
         if(usuario != null){
@@ -78,7 +77,7 @@ public class ClienteServiceImpl implements ClienteService{
             // fazer hash da nova senha
             usuario.setSenha(hashService.getHashSenha(dto.senha()));
         } else {
-            throw new ValidationException("Cliente inexistente");
+            throw new ValidationException("ID mal informado","Cliente inexistente");
         }
 
         Pessoa pessoa = repository.findById(id).getPessoa();
@@ -89,7 +88,7 @@ public class ClienteServiceImpl implements ClienteService{
             pessoa.setCpf(dto.cpf());
             pessoa.setUsuario(usuario);
         } else {
-            throw new ValidationException("Cliente inexistente");
+            throw new ValidationException("ID mal informado","Cliente inexistente");
         }
         
         Cliente cliente = repository.findById(id);
@@ -98,7 +97,7 @@ public class ClienteServiceImpl implements ClienteService{
             cliente.setSaldo(0d);
             cliente.setPessoa(pessoa);
         } else {
-            throw new ValidationException("Cliente inexistente");
+            throw new ValidationException("ID mal informado","Cliente inexistente");
         }
     }
 
@@ -161,7 +160,7 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Override
     @Transactional
-    public void updateUsuarioPassword(Long id, PasswordUpdateDTO passwordUpdateDTO) throws ValidationException {
+    public void updateUsuarioPassword(Long id, PasswordUpdateDTO passwordUpdateDTO) {
 
         Usuario usuario = usuarioRepository.findById(id);
         Cliente cliente = repository.findByIdUsuario(usuario.getId());

@@ -11,6 +11,11 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @QuarkusTest
 public class InjecaoResourceTest {
@@ -38,27 +43,31 @@ public class InjecaoResourceTest {
 
     @Test
     public void findByNomeTest() {
-        given()
-                .when()
-                .get("/injecoes/search/nome/injecao 1")
-                .then()
-                .statusCode(200)
-                .body("nome", hasItem(is("injecao 1")));
+        List<String> names = given()
+                                .when()
+                                .get("/injecoes/search/nome/injecao 1")
+                                .jsonPath()
+                                .getList("nome");
+
+        assertThat(names, hasItem(equalToIgnoringCase("injecao 1")));    
     }
 
     @Test
     public void findByCodigoTest() {
         given()
                 .when()
-                .get("/injecoes/search/codigo/33333333")
+                .get("/injecoes/search/codigo/#111")
                 .then()
                 .statusCode(200)
-                .body("codigo", hasItem(is("33333333")));
+                .body("codigo", hasItem(is("#111")));
     }
 
     @Test
     public void createTest() {
-        InjecaoDTO dto = new InjecaoDTO("Teste", "01010202", 50, 200d, "Gasolina");
+
+        String nome = LocalDateTime.now() + "_TESTEUNIT";
+
+        InjecaoDTO dto = new InjecaoDTO(nome, "123123", 50, 200.0, "Gasolina");
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -67,8 +76,8 @@ public class InjecaoResourceTest {
                 .post("/injecoes")
                 .then()
                 .statusCode(201)
-                .body("nome", is("Teste"))
-                .body("codigo", is("01010202"))
+                .body("nome", is(nome))
+                .body("codigo", is("123123"))
                 .body("tipoCombustivel", is("Gasolina"));
 
     }
@@ -99,9 +108,5 @@ public class InjecaoResourceTest {
                 .delete("/injecoes/{id}")
                 .then()
                 .statusCode(204);
-
-
-//        injecaoService.delete(id);
-//        assertNull(injecaoService.getById(response.id()));
     }
 }

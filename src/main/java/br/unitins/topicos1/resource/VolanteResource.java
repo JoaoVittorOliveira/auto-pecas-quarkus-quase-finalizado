@@ -3,11 +3,13 @@ package br.unitins.topicos1.resource;
 import org.jboss.logging.Logger;
 
 import br.unitins.topicos1.dto.VolanteDTO;
+import br.unitins.topicos1.dto.VolanteResponseDTO;
 import br.unitins.topicos1.service.VolanteService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 @Path("/volantes")
 @Produces(MediaType.APPLICATION_JSON)
@@ -39,7 +41,10 @@ public class VolanteResource {
     @Path("/search/codigo/{codigo}")
     public Response getByCodigo(@PathParam("codigo") String codigo){
         LOG.infof("Executando o metodo getByCodigo. Id: %s", codigo.toString());
-        return Response.ok(volanteService.getByCodigo(codigo)).build();
+        VolanteResponseDTO response = volanteService.getByCodigo(codigo);
+        if(response != null)
+            return Response.ok(response).build();
+        return Response.status(Status.NOT_FOUND).build();
     }
 
     @POST

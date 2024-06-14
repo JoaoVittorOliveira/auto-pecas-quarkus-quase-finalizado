@@ -35,9 +35,9 @@ insert into administrador(id_pessoa) values (2);
 
 -- PRODUTOS
  insert into produto(nome, codigo, estoque, preco, datacadastro) values 
-('Injecao 1', '#111', 50, 200.0, CURRENT_DATE), 
-('Injecao 2', '#222', 50, 300.0, CURRENT_DATE), 
-('Volante 1', '#111', 50, 200.0, CURRENT_DATE);
+('Injecao 1', '111', 50, 200.0, CURRENT_DATE), 
+('Injecao 2', '222', 50, 300.0, CURRENT_DATE), 
+('Volante 1', '333', 50, 200.0, CURRENT_DATE);
 
 insert into injecao(id, tipoCombustivel) values 
 (1, 'Etanol'), 

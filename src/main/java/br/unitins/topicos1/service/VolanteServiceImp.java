@@ -35,7 +35,6 @@ public class VolanteServiceImp implements VolanteService{
     @Override
     public VolanteResponseDTO getById(Long id) {
         verificaId(id);
-
         return VolanteResponseDTO.valueOf(volanteRepository.findById(id));
     }
 
@@ -50,7 +49,10 @@ public class VolanteServiceImp implements VolanteService{
 
     @Override
     public VolanteResponseDTO getByCodigo(String codigo) {
-        return  VolanteResponseDTO.valueOf(volanteRepository.findByCodigo(codigo));
+        Volante volante = volanteRepository.findByCodigo(codigo);
+        if(volante != null)
+            return VolanteResponseDTO.valueOf(volante);
+        return null;
     }
 
     @Override

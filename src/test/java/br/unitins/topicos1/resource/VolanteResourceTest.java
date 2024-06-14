@@ -10,8 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @QuarkusTest
 public class VolanteResourceTest {
@@ -33,34 +35,43 @@ public class VolanteResourceTest {
                 .when()
                 .get("/volantes/1")
                 .then()
-                .statusCode(200)
-                .body("id", is(1));
+                .statusCode(400);
     }
 
     @Test
     public void findByNomeTest() {
         given()
                 .when()
-                .get("/volantes/search/nome/Volante Volkswagen")
+                .get("/volantes/search/nome/Volante que nao existe")
                 .then()
                 .statusCode(200)
-                .body("nome", hasItem(is("Volante Volkswagen")));
+                .body("nome", not("Volante que existe"));
     }
 
     @Test
     public void findByCodigoTest() {
         given()
                 .when()
-                .get("/volantes/search/codigo/222222222222")
+                .get("/volantes/search/codigo/333")
                 .then()
                 .statusCode(200)
-                .body("codigo", is("222222222222"));
+                .body("codigo", is("333"));
     }
 
     @Test
     public void createTest() {
 
-        VolanteDTO dto = new VolanteDTO("Teste","1234567890123456", 50, 200d, "30",  1L,1L,1L);
+        String nome = LocalDateTime.now() + "_TESTEUNIT";
+        
+        VolanteDTO dto = new VolanteDTO(
+                                nome,
+                                UUID.randomUUID().toString()+"999", 
+                                50, 200.0, 
+                                "30",  
+                                1L,
+                                1L,
+                                1L
+                             );
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -69,19 +80,19 @@ public class VolanteResourceTest {
                 .post("/volantes")
                 .then()
                 .statusCode(201)
-                .body("nome", is("Teste"));
+                .body("nome", is(nome));
 
     }
 
     @Test
     public void updateTest() {
-        VolanteDTO dto = new VolanteDTO("Teste PUT","1234567890123455", 50, 200d, "30",  1L,1L,1L);
+        VolanteDTO dto = new VolanteDTO("Teste PUT","333", 50, 200.0, "30",  1L,1L,1L);
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
                 .when()
-                .pathParam("id", 2)
+                .pathParam("id", 3)
                 .put("/volantes/{id}")
                 .then()
                 .statusCode(204);

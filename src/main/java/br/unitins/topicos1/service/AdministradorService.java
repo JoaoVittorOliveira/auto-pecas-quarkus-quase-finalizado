@@ -8,13 +8,12 @@ import br.unitins.topicos1.dto.PasswordUpdateDTO;
 import br.unitins.topicos1.dto.UsernameUpdateDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
 import jakarta.validation.Valid;
-import jakarta.xml.bind.ValidationException;
 
 public interface AdministradorService {
     
     public AdministradorResponseDTO create(@Valid AdministradorDTO dto);
-    public void update(Long id, AdministradorDTO dto) throws ValidationException;
-    public void updateUsuarioPassword(Long id, PasswordUpdateDTO passwordUpdateDTO) throws ValidationException;
+    public void update(Long id, AdministradorDTO dto);
+    public void updateUsuarioPassword(Long id, PasswordUpdateDTO passwordUpdateDTO);
     public void updateUsuarioUsername(Long id, UsernameUpdateDTO usernameUpdateDTO);
     public boolean delete(Long id);
     public List<AdministradorResponseDTO> findAll();

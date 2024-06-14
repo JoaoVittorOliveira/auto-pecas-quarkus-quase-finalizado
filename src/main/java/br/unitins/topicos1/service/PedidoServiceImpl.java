@@ -7,7 +7,6 @@ import br.unitins.topicos1.dto.ItemPedidoDTO;
 import br.unitins.topicos1.dto.PedidoDTO;
 import br.unitins.topicos1.dto.PedidoResponseDTO;
 import br.unitins.topicos1.model.ItemPedido;
-import br.unitins.topicos1.model.Pagamento;
 import br.unitins.topicos1.model.Pedido;
 import br.unitins.topicos1.model.Produto;
 import br.unitins.topicos1.model.StatusPagamentoPedido;
